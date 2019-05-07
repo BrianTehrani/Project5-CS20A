@@ -115,6 +115,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CS20AProj5.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Project5.pdf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="dictionary.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
