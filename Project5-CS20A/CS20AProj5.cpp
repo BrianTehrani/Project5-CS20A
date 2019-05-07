@@ -1,6 +1,6 @@
 //============================================================================
 // Name        : CS20AProj5.cpp
-// Author      : 
+// Author      : Brian Tehrani
 //============================================================================
 
 #include <iostream>
@@ -29,6 +29,8 @@ using namespace std;
 class WordFinder {
 private:
 	// experiment with this size to see how it affects efficiency
+	// Original Table Size: 11117
+
 	static const int TABLE_SIZE = 11117;
 	// an array of lists of strings
 	list<string> table[TABLE_SIZE];
