@@ -12,12 +12,18 @@ using namespace std;
 
 /*
  * Part 1 Analysis:
+ *	The problem begins with assuming the set is already implemented and thus we should focus 
+ *	on the implementation of the algorithm. From Lecture 13 slide 7, the set has operations 
+ *  add(), remove(), contains() which cost O(1) (although in the stl set they would be O(lgn)).
+ *	First we are given a word, then we have to swap its characters until all combinations of  
+ *  the altered word is known. This is knows as a permutation. The example in the pdf shows the 
+ *  word cat having 6 possible word combinations (3! = 6). Thus the number of permutations depends
+ *	on the length of the string. Considering the length of the string being size n, there will be 
+ *	n! permutations of the words. With the given runtimes of the functions above we can acheive a 
+ *	runtime of: O(n!) for permuting * O(1) for either a lookup, add, remove = O(n!). Therefore, we
+ *	must find a better runtime as this algorithm would be too slow to consider implementing.
  *
- *
- *
- *
- *
- *  O(?)
+ *  O(?) = O(n!)
  *
  */
 
@@ -29,7 +35,8 @@ using namespace std;
 class WordFinder {
 private:
 	// experiment with this size to see how it affects efficiency
-	// Original Table Size: 11117
+	// Original Table Size: 11,117
+	// Dictionary file has max 99,167 words
 
 	static const int TABLE_SIZE = 11117;
 	// an array of lists of strings
