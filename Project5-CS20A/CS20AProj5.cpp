@@ -35,7 +35,8 @@ using namespace std;
 class WordFinder {
 private:
 	// experiment with this size to see how it affects efficiency
-	/*	Original Table Size: 11,117
+	/*	
+		Original Table Size: 11,117
 		Dictionary file has max 99,167 words
 		The max hash value is 2411. Therefore the size can be adjusted to 2412.
 		The word with this hash is: counterrevolutionaries
@@ -57,6 +58,7 @@ public:
 		/*
 		*	Table Issues with caracters: é >> gives negative ASCII
 		*	Case matters as well: NAME & name are different hashes
+		*		NOTE: NAME is not in dictionaty but name is.
 		*/
 
 		fstream file(dictionaryFile);
@@ -67,7 +69,9 @@ public:
 			string word;
 		
 			while (file >> word) {
-				//compute hash of the word & insert word
+				/*
+					compute hash of the word & insert word into list at hash address
+				*/
 				table[hash_func(word)].push_back(word);
 			}
 			file.close();
@@ -95,37 +99,52 @@ public:
 	void findMatches(string word, bool prnt) {
 		
 		// use the table to find the words
-		
 		// do not print them if prnt is false
 		if(prnt)
 			cout << word << " -> ";
 
+		//convert word to all lowercase
 		transform(word.begin(), word.end(), word.begin(), ::tolower);
+
+		
+
+		/*
+			To compare the given word to another word with the same letters
+			we need to string sort both the input word and the iterator once
+			the iterator finds the word in the given index list of the table.
+			temp		-> holds the sorted iterator
+			sorted_word -> holds the sorted lowercase word
+		*/
 
 		list<string>::iterator itr;
 		string sorted_word, temp;
 		itr = table[hash_func(word)].begin();
-		//sorted_word = word;
-		//sort(sorted_word.begin(), sorted_word.end());
+		sorted_word = word; sort(sorted_word.begin(), sorted_word.end());
 		
 		for (itr;  itr != table[hash_func(word)].end(); itr++) {
-			
-			if (prnt)
-			{	
-				sorted_word = word; sort(sorted_word.begin(), sorted_word.end());
-				temp = *itr; sort(temp.begin(), temp.end());
-				if (strcmp(temp.c_str(), sorted_word.c_str()) == 0 && itr->compare(word) != 0) {
-					cout << *itr << ", ";
-				}
-			}
 
+			temp = *itr; sort(temp.begin(), temp.end());
+
+			/*
+				Comparisons are between the exact letter match of the sorted words
+				&& checking to not print the input word with the same word in the 
+				dictionary.
+			*/
+
+			if (strcmp(temp.c_str(), sorted_word.c_str()) == 0 && itr->compare(word) != 0)
+				if (prnt) cout << *itr << ", ";	
 		}
 		
 		cout << endl;
 		
 	}
 
-	//Added for easy paste of hash func
+	/*
+		Added for easy paste of hash func.
+		Some hash yeild negative values, to counteract 
+		this we take the abs() of the letters. 
+	*/
+
 	int hash_func(string word) {
 
 		int sum = 0;
