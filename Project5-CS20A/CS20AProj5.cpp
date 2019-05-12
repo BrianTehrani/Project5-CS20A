@@ -163,7 +163,7 @@ int main() {
 	// Stress the application to ensure it runs efficiently under load.
 	// All runs below should complete practically in an instant.
 	
-	/*
+	
 	const int RUNS = 100000;
 	for (int i = 0; i <= RUNS; i++) {
 		finder.findMatches("noMoreStars", false); // print nothing, just do the crunching
@@ -173,6 +173,6 @@ int main() {
 	}
 	cout << endl;
 	finder.findMatches("noMoreStars", true);
-	*/
+	
 	return 0;
 }
