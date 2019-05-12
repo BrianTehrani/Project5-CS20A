@@ -51,8 +51,26 @@ public:
 	WordFinder(string dictionaryFile) {
 	
 		// read in the file and populate the table
+		fstream file(dictionaryFile);
+		if (!file.is_open())
+			cerr << "Error Opening File!" << endl;
+		else {
+
+			string word;
 		
+			while (file >> word) {
+
+				//compute hash of the word & insert word
+				table[hash_func(word)].push_front(word);
+				
+			}
+
+			file.close();
+
+		}
+
 	}
+
 
 	/*
 	 * Find the dictionary words that have the same letters as the given word.
@@ -76,9 +94,42 @@ public:
 		// use the table to find the words
 		
 		// do not print them if prnt is false
+
+		list<string>::iterator itr;
+		itr = table[hash_func(word)].begin();
+		
+		if(prnt)
+			cout << word << ' -> ';
+
+		for (itr;  itr != table[hash_func(word)].end(); itr++) {
+			
+			//if (*itr == word) {
+				if (prnt)
+				{
+					//cout << word << ' -> ';
+					if (word.compare(word) != 0) {
+						cout << *itr << ', ';
+					}
+				}
+			//}
+
+		}
+		
 		
 	}
+
+	//Added for easy paste of hash func
+	int hash_func(string word) {
+
+		int sum = 0;
+		for (int i = 0; i < word.length(); i++) {
+			sum += word[i];
+		}
+		return abs(sum % TABLE_SIZE);
+	}
+
 };
+
 
 
 /*************** DO NOT CHANGE THE CODE BELOW **************/
@@ -104,6 +155,8 @@ int main() {
 
 	// Stress the application to ensure it runs efficiently under load.
 	// All runs below should complete practically in an instant.
+	
+	/* Return to this later!
 	const int RUNS = 100000;
 	for (int i = 0; i <= RUNS; i++) {
 		finder.findMatches("noMoreStars", false); // print nothing, just do the crunching
@@ -113,6 +166,6 @@ int main() {
 	}
 	cout << endl;
 	finder.findMatches("noMoreStars", true);
-
+	*/
 	return 0;
 }
