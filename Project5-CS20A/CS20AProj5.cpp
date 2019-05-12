@@ -35,10 +35,13 @@ using namespace std;
 class WordFinder {
 private:
 	// experiment with this size to see how it affects efficiency
-	// Original Table Size: 11,117
-	// Dictionary file has max 99,167 words
+	/*	Original Table Size: 11,117
+		Dictionary file has max 99,167 words
+		The max hash value is 2411. Therefore the size can be adjusted to 2412.
+		The word with this hash is: counterrevolutionaries
+	*/ 
+	static const int TABLE_SIZE = 2412;
 
-	static const int TABLE_SIZE = 11117;
 	// an array of lists of strings
 	list<string> table[TABLE_SIZE];
 
@@ -51,6 +54,11 @@ public:
 	WordFinder(string dictionaryFile) {
 	
 		// read in the file and populate the table
+		/*
+		*	Table Issues with caracters: é >> gives negative ASCII
+		*	Case matters as well: NAME & name are different hashes
+		*/
+
 		fstream file(dictionaryFile);
 		if (!file.is_open())
 			cerr << "Error Opening File!" << endl;
@@ -59,16 +67,11 @@ public:
 			string word;
 		
 			while (file >> word) {
-
 				//compute hash of the word & insert word
-				table[hash_func(word)].push_front(word);
-				
+				table[hash_func(word)].push_back(word);
 			}
-
 			file.close();
-
 		}
-
 	}
 
 
@@ -94,27 +97,31 @@ public:
 		// use the table to find the words
 		
 		// do not print them if prnt is false
+		if(prnt)
+			cout << word << " -> ";
+
+		transform(word.begin(), word.end(), word.begin(), ::tolower);
 
 		list<string>::iterator itr;
+		string sorted_word, temp;
 		itr = table[hash_func(word)].begin();
+		//sorted_word = word;
+		//sort(sorted_word.begin(), sorted_word.end());
 		
-		if(prnt)
-			cout << word << ' -> ';
-
 		for (itr;  itr != table[hash_func(word)].end(); itr++) {
 			
-			//if (*itr == word) {
-				if (prnt)
-				{
-					//cout << word << ' -> ';
-					if (word.compare(word) != 0) {
-						cout << *itr << ', ';
-					}
+			if (prnt)
+			{	
+				sorted_word = word; sort(sorted_word.begin(), sorted_word.end());
+				temp = *itr; sort(temp.begin(), temp.end());
+				if (strcmp(temp.c_str(), sorted_word.c_str()) == 0 && itr->compare(word) != 0) {
+					cout << *itr << ", ";
 				}
-			//}
+			}
 
 		}
 		
+		cout << endl;
 		
 	}
 
@@ -123,9 +130,9 @@ public:
 
 		int sum = 0;
 		for (int i = 0; i < word.length(); i++) {
-			sum += word[i];
+			sum += abs(word[i]);
 		}
-		return abs(sum % TABLE_SIZE);
+		return sum % TABLE_SIZE;
 	}
 
 };
@@ -156,7 +163,7 @@ int main() {
 	// Stress the application to ensure it runs efficiently under load.
 	// All runs below should complete practically in an instant.
 	
-	/* Return to this later!
+	/*
 	const int RUNS = 100000;
 	for (int i = 0; i <= RUNS; i++) {
 		finder.findMatches("noMoreStars", false); // print nothing, just do the crunching
