@@ -29,4 +29,12 @@
       <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Project_5_result_1.PNG">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="Project_5_result_2.PNG">
+      <Filter>Source Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

@@ -123,6 +123,10 @@
   <ItemGroup>
     <Text Include="dictionary.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Project_5_result_1.PNG" />
+    <Image Include="Project_5_result_2.PNG" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
